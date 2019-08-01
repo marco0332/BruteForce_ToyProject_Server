@@ -3,5 +3,5 @@
   
 ### 환경 설정  
 cd frontend  
-npm install
-npm run build
+npm install  
+npm run build  
