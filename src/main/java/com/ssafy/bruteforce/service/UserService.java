@@ -6,7 +6,7 @@ import com.ssafy.bruteforce.dto.User;
 
 public interface UserService{
     /** 회원 가입 */
-    public void signupUser(User user);
+    public void addUser(User user);
     
 	/** 회원 정보 수정 */
     public void updateUser(User user);

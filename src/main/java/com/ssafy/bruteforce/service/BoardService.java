@@ -1,6 +1,9 @@
 package com.ssafy.bruteforce.service;
 
 import java.util.List;
+
+import com.ssafy.bruteforce.dto.Answer;
+import com.ssafy.bruteforce.dto.Comment;
 import com.ssafy.bruteforce.dto.Question;
 
 public interface BoardService {
@@ -26,8 +29,27 @@ public interface BoardService {
 	public boolean updateQuestion(Question question);
 	
 	/** 질문 삭제 */
-    public boolean deleteQuestion(int qid);
-
-
+    public boolean deleteQuestion(String qid);
+    
+    /** 답변 채택 */
+    public boolean closedUpdate(Question question);
+    
+    /** 답변 등록 */
+    public boolean addAnswer(Answer answer);
+    
+    /** 답변 수정 */
+	public boolean updateAnswer(Answer answer);
 	
+	/** 답변 삭제 */
+    public boolean deleteAnswer(String aid);
+
+	/** 댓글 등록 */
+    public boolean addComment(Comment comment);
+    
+    /** 댓글 수정 */
+	public boolean updateComment(Comment comment);
+	
+	/** 댓글 삭제 */
+    public boolean deleteComment(String cid);
+
 }
