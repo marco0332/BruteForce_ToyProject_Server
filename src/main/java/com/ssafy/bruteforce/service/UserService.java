@@ -3,6 +3,7 @@ package com.ssafy.bruteforce.service;
 import java.util.List;
 
 import com.ssafy.bruteforce.dto.User;
+import com.ssafy.bruteforce.dto.UserQnAInfo;
 
 public interface UserService{
     /** 회원 가입 */
@@ -32,5 +33,6 @@ public interface UserService{
 	/** ID 찾기 */
 	public List<User> findId(User user);
 
-    
+    /** My페이지에서 자신이 남긴글 가져오기 */
+    public List<UserQnAInfo> findAllUserQnAInfo(String id);
 }

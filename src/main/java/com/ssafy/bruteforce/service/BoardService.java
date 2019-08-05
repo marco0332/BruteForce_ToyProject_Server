@@ -17,7 +17,7 @@ public interface BoardService {
 	public List<Question> findQuestionByTitle(String title);
     
     /** 작성자로 찾기 */
-	public List<Question> findQuestionByWriter(String writerUid);
+	public List<Question> findQuestionById(String writerUid);
     
     /** 태그로 찾기 */
 	public List<Question> findQuestionByTag(String[] tag);
@@ -34,6 +34,9 @@ public interface BoardService {
     /** 답변 채택 */
     public boolean closedUpdate(Question question);
     
+    /** id로 답변 찾기 */
+    public List<Answer> findAnswerById(String writerUid);
+
     /** 답변 등록 */
     public boolean addAnswer(Answer answer);
     
@@ -43,6 +46,9 @@ public interface BoardService {
 	/** 답변 삭제 */
     public boolean deleteAnswer(String aid);
 
+    /** id로 댓글 찾기 */
+    public List<Comment> findCommentById(String writerUid);
+
 	/** 댓글 등록 */
     public boolean addComment(Comment comment);
     
@@ -51,5 +57,6 @@ public interface BoardService {
 	
 	/** 댓글 삭제 */
     public boolean deleteComment(String cid);
+
 
 }

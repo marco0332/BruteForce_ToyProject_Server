@@ -27,7 +27,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<Question> findQuestionByWriter(String writerUid) {
+    public List<Question> findQuestionById(String writerUid) {
         return null;
     }
 
@@ -57,6 +57,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public List<Answer> findAnswerById(String writerUid) {
+        return null;
+    }
+
+
+    @Override
     public boolean addAnswer(Answer answer) {
         return false;
     }
@@ -69,6 +75,11 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public boolean deleteAnswer(String aid) {
         return false;
+    }
+
+    @Override
+    public List<Comment> findCommentById(String writerUid) {
+        return null;
     }
 
     @Override
@@ -85,5 +96,4 @@ public class BoardServiceImpl implements BoardService {
 	public boolean deleteComment(String cid) {
 		return false;
 	}
-
 }

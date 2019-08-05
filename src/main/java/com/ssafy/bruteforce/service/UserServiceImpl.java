@@ -3,6 +3,7 @@ package com.ssafy.bruteforce.service;
 import java.util.List;
 
 import com.ssafy.bruteforce.dto.User;
+import com.ssafy.bruteforce.dto.UserQnAInfo;
 
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> findId(User user) {
 		return null;
+    }
+
+    @Override
+    public List<UserQnAInfo> findAllUserQnAInfo(String id) {
+        return null;
 	}
 
 }
