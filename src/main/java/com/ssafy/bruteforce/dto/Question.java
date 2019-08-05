@@ -20,6 +20,7 @@ public class Question implements Serializable{
     public Date timestamp;
     public int score;
     public List<Answer> answers;
+    public List<Comment> comments;
 
     public Question() {
     }
@@ -35,6 +36,7 @@ public class Question implements Serializable{
         this.timestamp = new Date();
         this.score = 0;
         this.answers = new ArrayList<Answer>();
+        this.comments = new ArrayList<Comment>();
     }
 
     public String getQid() {
@@ -116,13 +118,21 @@ public class Question implements Serializable{
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
     }
+    
+    public List<Comment> getComments() {
+        return comments;
+    }
 
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
     @Override
     public String toString() {
-        return "Question [answers=" + answers.toString() + ", bClosed=" + bClosed + ", contents=" + contents + ", qid=" + qid
+        return "Question [comments=" + comments.toString() + ", answers=" + answers.toString() + ", bClosed=" + bClosed + ", contents=" + contents + ", qid=" + qid
                 + ", score=" + score + ", tag=" + Arrays.toString(tag) + ", timestamp=" + timestamp + ", title=" + title
                 + ", writerName=" + writerName + ", writerUid=" + writerUid + "]";
     }
+
 
     
     
