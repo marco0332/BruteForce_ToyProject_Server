@@ -4,15 +4,20 @@ import java.util.List;
 
 import com.ssafy.bruteforce.dto.User;
 import com.ssafy.bruteforce.dto.UserQnAInfo;
+import com.ssafy.bruteforce.repository.UserRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
+    UserRepository userDao;
+
     @Override
     public void addUser(User user) {
-
+        userDao.insert(user);
     }
 
     @Override
