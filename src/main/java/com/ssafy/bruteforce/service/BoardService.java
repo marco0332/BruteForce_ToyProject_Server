@@ -32,7 +32,7 @@ public interface BoardService {
     public boolean deleteQuestion(String qid);
     
     /** 답변 채택 */
-    public boolean closedUpdate(Question question);
+    public boolean closedUpdate(Question question,String aid);
     
     /** id로 답변 찾기 */
     public List<Answer> findAnswerById(String writerUid);

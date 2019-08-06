@@ -52,7 +52,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public boolean closedUpdate(Question question) {
+    public boolean closedUpdate(Question question, String aid) {
         return false;
     }
 
