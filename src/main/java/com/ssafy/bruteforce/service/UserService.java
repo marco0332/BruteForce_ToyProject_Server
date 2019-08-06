@@ -25,7 +25,7 @@ public interface UserService{
     // public List<User> searchAllUser(PageBean bean); // TODO:페이지 빈 구현
     
 	/** 로그인 확인 */
-    public boolean login(User user);
+    public boolean login(String id, String pw);
     
 	/** ID 중복체크 */
     public boolean idCheck(String id);
