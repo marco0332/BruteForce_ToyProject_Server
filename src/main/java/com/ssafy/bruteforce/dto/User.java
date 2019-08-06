@@ -12,7 +12,8 @@ public class User implements Serializable {
     private String userid;
     private String pw;
     private String name;
-    private String point;
+    private String photoURL;
+    private int point;
     private Boolean bAdmin;
     private Boolean bDeactivated;
     private static final long serialVersionUID = 1L;
@@ -20,10 +21,11 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String userid, String pw, String name, String point) {
+    public User(String userid, String pw, String name, String photoURL, int point) {
         this.userid = userid;
         this.pw = pw;
         this.name = name;
+        this.photoURL = photoURL;
         this.point = point;
         this.bAdmin = false;
         this.bDeactivated = false;
@@ -53,11 +55,11 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getPoint() {
+    public int getPoint() {
         return point;
     }
 
-    public void setPoint(String point) {
+    public void setPoint(int point) {
         this.point = point;
     }
 
@@ -80,6 +82,14 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return String.format("userid = %s, pw = %s, name = %name", userid, pw, name);
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
 
 }
