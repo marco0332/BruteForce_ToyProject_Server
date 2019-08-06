@@ -1,6 +1,7 @@
 package com.ssafy.bruteforce.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.ssafy.bruteforce.dto.User;
 import com.ssafy.bruteforce.dto.UserQnAInfo;
@@ -32,7 +33,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deactivateUser(String id) {
-
+        Optional<User> user = userDao.findById(id);
+        if (user.isPresent()) 
+        {
+            User deactivatedUser = user.get();
+            if(deactivatedUser.getbDeactivated())
+            {
+                System.out.println("Error/deactivateUser : 이미 비활성화된 계정");
+                return;
+            }
+            deactivatedUser.setbDeactivated(true);
+            userDao.save(deactivatedUser);
+        } else 
+        {
+            System.out.println("Error/deactivateUser : 존재하지 않는 계정");
+            return;
+        }
     }
 
     @Override
@@ -50,14 +66,14 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-	@Override
-	public List<User> findId(User user) {
-		return null;
+    @Override
+    public List<User> findId(User user) {
+        return null;
     }
 
     @Override
     public List<UserQnAInfo> findAllUserQnAInfo(String id) {
         return null;
-	}
+    }
 
 }
