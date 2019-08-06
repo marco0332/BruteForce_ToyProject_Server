@@ -32,7 +32,7 @@ public interface BoardService {
     public boolean deleteQuestion(String qid);
     
     /** 답변 채택 */
-    public boolean closedUpdate(Question question,String aid);
+    public boolean closedUpdate(String qid,String aid);
     
     /** id로 답변 찾기 */
     public List<Answer> findAnswerById(String writerUid);
@@ -47,7 +47,7 @@ public interface BoardService {
     public boolean deleteAnswer(String aid);
 
     /** id로 댓글 찾기 */
-    public List<Comment> findCommentById(String writerUid);
+    public List<Comment> findByWriterUid(String writerUid);
 
 	/** 댓글 등록 */
     public boolean addComment(Comment comment);

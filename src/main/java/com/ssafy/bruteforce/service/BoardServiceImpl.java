@@ -1,12 +1,14 @@
 package com.ssafy.bruteforce.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.ssafy.bruteforce.dto.Answer;
 import com.ssafy.bruteforce.dto.Comment;
 import com.ssafy.bruteforce.dto.Question;
 import com.ssafy.bruteforce.repository.AnswerRepository;
 import com.ssafy.bruteforce.repository.CommentRepository;
+import com.ssafy.bruteforce.repository.QuestionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +16,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class BoardServiceImpl implements BoardService {
     @Autowired
-    private CommentRepository cRepo;
+    private QuestionRepository questionRepo;
     @Autowired
-    private AnswerRepository aRepo;
+    private AnswerRepository answerRepo;
+    @Autowired
+    private CommentRepository commentRepo;
 
     @Override
     public List<Question> findAllQuestions() {
@@ -59,20 +63,26 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public boolean closedUpdate(Question question, String aid) {
+    public boolean closedUpdate(String qid, String aid) {
+        Optional<Question> optionalQ = questionRepo.findById(qid);
+        Question newQ = optionalQ.get();
+        newQ.setbClosed(true);
+        
+
+        
         return false;
     }
 
     @Override
     public List<Answer> findAnswerById(String writerUid) {
-        return aRepo.findByWriterUid(writerUid);
+        return answerRepo.findByWriterUid(writerUid);
     }
 
 
     @Override
     public boolean addAnswer(Answer answer) {
         try {
-            aRepo.insert(answer);            
+            answerRepo.insert(answer);            
         } catch (Exception e) {
             return false;
         }
@@ -81,13 +91,8 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public boolean updateAnswer(Answer answer) {
-        return false;
-    }
-
-    @Override
-    public boolean deleteAnswer(String aid) {
         try {
-            aRepo.deleteById("aid");
+            answerRepo.save(answer);
         } catch (Exception e) {
             return false;
         }
@@ -95,14 +100,24 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<Comment> findCommentById(String writerUid) {
-        return cRepo.findByWriterUid(writerUid);
+    public boolean deleteAnswer(String aid) {
+        try {
+            answerRepo.deleteById("aid");
+        } catch (Exception e) {
+            return false;
+        }
+		return true;
+    }
+
+    @Override
+    public List<Comment> findByWriterUid(String writerUid) {
+        return commentRepo.findByWriterUid(writerUid);
     }
 
     @Override
     public boolean addComment(Comment comment) {
         try {
-            cRepo.insert(comment);            
+            commentRepo.insert(comment);            
         } catch (Exception e) {
             return false;
         }
@@ -112,7 +127,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public boolean updateComment(Comment comment) {
         try {
-            cRepo.save(comment);            
+            commentRepo.save(comment);            
         } catch (Exception e) {
             return false;
         }
@@ -122,7 +137,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public boolean deleteComment(String cid) {
         try {
-            cRepo.deleteById("cid");
+            commentRepo.deleteById("cid");
         } catch (Exception e) {
             return false;
         }
