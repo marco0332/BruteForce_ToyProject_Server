@@ -27,63 +27,50 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String id) {
+    public void deleteUserById(String id) {
         userDao.deleteById(id);
     }
 
     @Override
-    public void deactivateUser(String id) {
-        Optional<User> user = userDao.findById(id);
-        if (user.isPresent()) 
-        {
-            User deactivatedUser = user.get();
-            if(deactivatedUser.getbDeactivated())
-            {
-                System.out.println("Error/deactivateUser : 이미 비활성화된 계정");
-                return;
-            }
-            deactivatedUser.setbDeactivated(true);
-            userDao.save(deactivatedUser);
-        } else 
-        {
-            System.out.println("Error/deactivateUser : 존재하지 않는 계정");
+    public void deactivateUserById(String id) {
+        User deactivatedUser = userDao.findById(id).get();
+        if (deactivatedUser.getbDeactivated()) {
+            System.out.println("Error/deactivateUser : 이미 비활성화된 계정");
             return;
         }
+        deactivatedUser.setbDeactivated(true);
+        userDao.save(deactivatedUser);
     }
 
     @Override
-    public User searchUser(String id) {
+    public List<User> findAllUserByName(String name) {
         return null;
     }
 
     @Override
     public boolean login(String id, String pw) {
         Optional<User> oUser = userDao.findById(id);
-        if(oUser.isPresent())
-        {
+        if (oUser.isPresent()) {
             User currentUser = oUser.get();
             Boolean bLoginResult = currentUser.getPw() == pw ? true : false;
             return bLoginResult;
         }
-        else
-        {
-            System.out.println("Error/Login : 존재하지 않는 아이디입니다.");
-            return false;
-        }
-    }
-
-    @Override
-    public boolean idCheck(String id) {
+        System.out.println("Error/Login : 존재하지 않는 아이디입니다.");
         return false;
     }
 
     @Override
-    public List<User> findId(User user) {
+    public boolean existsById(String id) {
+        return userDao.existsById(id);
+    }
+
+    @Override
+    public User findUserById(String id) {
         return null;
     }
 
     @Override
-    public List<UserQnAInfo> findAllUserQnAInfo(String id) {
+    public List<UserQnAInfo> findAllUserQnAInfoById(String id) {
         return null;
     }
 
