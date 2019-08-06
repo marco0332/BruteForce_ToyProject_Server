@@ -1,9 +1,8 @@
 package com.ssafy.bruteforce;
 
-import java.util.ArrayList;
 
 import com.ssafy.bruteforce.dto.User;
-import com.ssafy.bruteforce.repository.UserRepository;
+import com.ssafy.bruteforce.service.UserService;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,37 +15,34 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ApplicationTests {
 
     @Autowired
-    UserRepository userTest;
+    UserService userTest;
 
 	@Test
-	public void contextLoads() {
-        User user0 = new User("userid", "pw", "name", "photoURL", 100);
-        User user1 = new User("leekiin", "pw", "name", "", 100);
-        ArrayList<User> list = new ArrayList<User>();
-        User user2 =  new User("jhi", "pw", "name", "", 100);
-        User user3 =  new User("phb", "pw", "name", "", 100);
-        list.add(user2);
-        list.add(user3);
-        userTest.insert(user1);
-        userTest.insert(list);
-        
-        System.out.println("=======================================");
-        System.out.println("id로 찾아보기");
-        System.out.println(userTest.findById("userid"));
-        System.out.println("=======================================");
-        System.out.println("=======================================");
-        System.out.println("전부 다 찾아보기");
-        System.out.println(userTest.findAll());
-        System.out.println("=======================================");
-        System.out.println("=======================================");
-        System.out.println("id로 삭제하기");
-        userTest.deleteById("userid");
-        System.out.println("삭제 후 결과");
-        System.out.println(userTest.findAll());
-        System.out.println("=======================================");
-        userTest.deleteById("leekiin");
-        userTest.deleteById("jhi");
-        userTest.deleteById("phb");
+	public void userServiceTest() {
+        User user1 = new User("1", "null", "null", "null", 0);
+        User user2 = new User("2", "null", "null", "null", 0);
+        User user3 = new User("3", "null", "null", "null", 0);
+        User user4 = new User("4", "null", "null", "null", 0);
+        System.out.println("=====user add test=====");
+        userTest.addUser(user1);
+        userTest.addUser(user2);
+        userTest.addUser(user3);
+        userTest.addUser(user4);
+        System.out.println("=====findAllUserByName test====");
+        System.out.println(userTest.findAllUserByName("nu"));
+        System.out.println("=====deleteUserById test====");
+        userTest.deleteUserById("1");
+        System.out.println(userTest.findAllUserByName("null"));
+        System.out.println("=====updateUser test====");
+        user4.setName("nasdf");
+        userTest.updateUser(user4);
+        userTest.deactivateUserById("2");
+        System.out.println(userTest.findAllUserByName("null"));
+        System.out.println("=====findUserById test====");
+        System.out.println(userTest.findUserById("4"));
+        userTest.deleteUserById("2");
+        userTest.deleteUserById("3");
+        userTest.deleteUserById("4");
 	}
 
 }
