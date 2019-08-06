@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "question")
 public class Question implements Serializable{
-    private static final long serialVersionUID = 1L;
+    @Id
     public String qid;
     public String title;
     public String contents;
@@ -21,6 +23,7 @@ public class Question implements Serializable{
     public int score;
     public List<Answer> answers;
     public List<Comment> comments;
+    private static final long serialVersionUID = 1L;
 
     public Question() {
     }

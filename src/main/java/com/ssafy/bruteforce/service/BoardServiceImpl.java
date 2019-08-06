@@ -5,11 +5,18 @@ import java.util.List;
 import com.ssafy.bruteforce.dto.Answer;
 import com.ssafy.bruteforce.dto.Comment;
 import com.ssafy.bruteforce.dto.Question;
+import com.ssafy.bruteforce.repository.AnswerRepository;
+import com.ssafy.bruteforce.repository.CommentRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BoardServiceImpl implements BoardService {
+    @Autowired
+    private CommentRepository cRepo;
+    @Autowired
+    private AnswerRepository aRepo;
 
     @Override
     public List<Question> findAllQuestions() {
@@ -58,13 +65,18 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<Answer> findAnswerById(String writerUid) {
-        return null;
+        return aRepo.findByWriterUid(writerUid);
     }
 
 
     @Override
     public boolean addAnswer(Answer answer) {
-        return false;
+        try {
+            aRepo.insert(answer);            
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -74,26 +86,46 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public boolean deleteAnswer(String aid) {
-        return false;
+        try {
+            aRepo.deleteById("aid");
+        } catch (Exception e) {
+            return false;
+        }
+		return true;
     }
 
     @Override
     public List<Comment> findCommentById(String writerUid) {
-        return null;
+        return cRepo.findByWriterUid(writerUid);
     }
 
     @Override
     public boolean addComment(Comment comment) {
-        return false;
+        try {
+            cRepo.insert(comment);            
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean updateComment(Comment comment) {
-        return false;
+        try {
+            cRepo.save(comment);            
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
 	}
 
 	@Override
 	public boolean deleteComment(String cid) {
-		return false;
+        try {
+            cRepo.deleteById("cid");
+        } catch (Exception e) {
+            return false;
+        }
+		return true;
 	}
 }

@@ -48,5 +48,4 @@ public class ApplicationTests {
         userTest.deleteById("jhi");
         userTest.deleteById("phb");
 	}
-
 }

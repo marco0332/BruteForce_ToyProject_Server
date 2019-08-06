@@ -2,16 +2,19 @@ package com.ssafy.bruteforce.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "comment")
 public class Comment implements Serializable{
-    private static final long serialVersionUID = 1L;
-	public String cid;
+    @Id
+    public String cid;
     public String writerUid;
     public String writerName;
     public String contents;
     public Date timestamp;
+    private static final long serialVersionUID = 1L;
     
     public Comment(){}
     
