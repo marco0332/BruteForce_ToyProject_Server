@@ -13,6 +13,7 @@ public class User implements Serializable {
     private String pw;
     private String name;
     private String photoURL;
+    private String profile;
     private int point;
     private Boolean bAdmin;
     private Boolean bDeactivated;
@@ -27,6 +28,7 @@ public class User implements Serializable {
         this.name = name;
         this.photoURL = photoURL;
         this.point = point;
+        this.profile = "";
         this.bAdmin = false;
         this.bDeactivated = false;
     }
@@ -79,11 +81,6 @@ public class User implements Serializable {
         this.bDeactivated = bDeactivated;
     }
 
-    @Override
-    public String toString() {
-        return String.format("userid = %s, pw = %s, name = %name", userid, pw, name);
-    }
-
     public String getPhotoURL() {
         return photoURL;
     }
@@ -92,4 +89,19 @@ public class User implements Serializable {
         this.photoURL = photoURL;
     }
 
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    @Override
+    public String toString() {
+        return "User [bAdmin=" + bAdmin + ", bDeactivated=" + bDeactivated + ", name=" + name + ", photoURL=" + photoURL
+                + ", point=" + point + ", profile=" + profile + ", pw=" + pw + ", userid=" + userid + "]";
+    }
+
+    
 }
