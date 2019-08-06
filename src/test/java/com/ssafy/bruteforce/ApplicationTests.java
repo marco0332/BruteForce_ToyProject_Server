@@ -44,5 +44,4 @@ public class ApplicationTests {
         userTest.deleteUserById("3");
         userTest.deleteUserById("4");
 	}
-
 }
