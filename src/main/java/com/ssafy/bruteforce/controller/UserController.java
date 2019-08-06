@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,8 +22,6 @@ public class UserController{
     
     @GetMapping(value = "/findAllUserQnAInfo/{id}")
 	public ResponseEntity<List<UserQnAInfo>> findAllUserQnAInfo(@PathVariable String id) throws Exception {
-		//logger.info("1-------------findQABoardById-----------------------------");
-        
         List<UserQnAInfo> userQnAInfo = userService.findAllUserQnAInfo(id);
 		if (userQnAInfo.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

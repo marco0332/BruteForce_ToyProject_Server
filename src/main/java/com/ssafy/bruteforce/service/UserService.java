@@ -16,7 +16,7 @@ public interface UserService{
     public void deleteUser(String id);
     
 	/** 회원 탈퇴 표시 */
-    public void withdrawUser(String id);
+    public void deactivateUser(String id);
     
 	/** 유저 id로 검색 */
     public User searchUser(String id);
