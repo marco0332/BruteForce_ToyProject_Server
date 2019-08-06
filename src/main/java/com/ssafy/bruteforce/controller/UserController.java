@@ -113,8 +113,4 @@ public class UserController{
 		}
 		return new ResponseEntity<List<UserQnAInfo>>(userQnAInfo, HttpStatus.OK);
 	}
-
-
-
-
 }
