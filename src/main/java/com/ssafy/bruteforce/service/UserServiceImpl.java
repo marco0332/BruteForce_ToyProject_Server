@@ -49,9 +49,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean login(String id, String pw) {
-        Optional<User> oUser = userDao.findById(id);
-        if (oUser.isPresent()) {
-            User currentUser = oUser.get();
+        Optional<User> user = userDao.findById(id);
+        if (user.isPresent()) {
+            User currentUser = user.get();
             Boolean bLoginResult = currentUser.getPw() == pw ? true : false;
             return bLoginResult;
         }
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserById(String id) {
-        return null;
+        return userDao.findById(id).get();
     }
 
     @Override
