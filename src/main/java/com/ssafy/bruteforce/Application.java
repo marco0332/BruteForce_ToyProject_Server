@@ -22,12 +22,11 @@ public class Application implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		
-		// service.addQuestion(new Question("Q1","what","qContents1","qWriter1","qWriterName1",new String[] {"java","c"}));
-		// service.addQuestion(new Question("Q2","what","qContents2","bin","qWriterName2",new String[] {"unity","vuetify"}));
-		// service.addQuestion(new Question("Q3","hihi","qContents3","bin","qWriterName3",new String[] {"unity","vuetify"}));
-		// service.deleteQuestion("Q2");
-		// service.addAnswer(new Answer("Answer","wuid","ryeong","답변이어유!!"), "Q3");
-		service.deleteAnswer("Answer", "Q3");
+		// service.addQuestion(new Question("what","qContents1","qWriter1","qWriterName1",new String[] {"java","c"}));
+		// service.addQuestion(new Question("what","qContents2","bin","qWriterName2",new String[] {"unity","vuetify"}));
+		// service.addQuestion(new Question("hihi","qContents3","bin","qWriterName3",new String[] {"unity","vuetify"}));
+		service.addAnswer(new Answer("wuid","ryeong","답변이어유!!"), "5d4930c561cbaa35f8b7c681");
+		// service.deleteAnswer("Answer", "5d4930c561cbaa35f8b7c681");
 	}
 
 

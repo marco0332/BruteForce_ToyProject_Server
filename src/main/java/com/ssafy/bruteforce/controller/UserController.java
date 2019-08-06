@@ -20,14 +20,14 @@ public class UserController{
     @Autowired
     private UserService userService;
     
-    @GetMapping(value = "/findAllUserQnAInfo/{id}")
-	public ResponseEntity<List<UserQnAInfo>> findAllUserQnAInfo(@PathVariable String id) throws Exception {
-        List<UserQnAInfo> userQnAInfo = userService.findAllUserQnAInfo(id);
-		if (userQnAInfo.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<List<UserQnAInfo>>(userQnAInfo, HttpStatus.OK);
-	}
+    // @GetMapping(value = "/findAllUserQnAInfo/{id}")
+	// public ResponseEntity<List<UserQnAInfo>> findAllUserQnAInfo(@PathVariable String id) throws Exception {
+    //     List<UserQnAInfo> userQnAInfo = userService.findAllUserQnAInfo(id);
+	// 	if (userQnAInfo.isEmpty()) {
+	// 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	// 	}
+	// 	return new ResponseEntity<List<UserQnAInfo>>(userQnAInfo, HttpStatus.OK);
+	// }
 
 
 

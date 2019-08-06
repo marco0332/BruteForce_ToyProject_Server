@@ -74,8 +74,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public boolean closedUpdate(String qid, String aid) {
-        Optional<Question> optionalQ = questionRepo.findById(qid);
-        Question newQ = optionalQ.get();
+        Question newQ = questionRepo.findById(qid).get();
         newQ.setbClosed(true);
 
         
@@ -90,8 +89,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public boolean addAnswer(Answer answer, String qid) {
         try {
-            Optional<Question> targetQ = questionRepo.findById(qid);
-            Question getQ = targetQ.get();
+            Question getQ = questionRepo.findById(qid).get();
             getQ.getAnswers().add(answer);
             questionRepo.save(getQ);
         } catch (Exception e) {
@@ -113,10 +111,15 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public boolean deleteAnswer(String aid, String qid) {
         try {
-            Optional<Question> targetQ = questionRepo.findById(qid);
-            Question getQ = targetQ.get();
-            getQ.getAnswers().remove(answerRepo.findById(aid).get());
-            
+            Question getQ = questionRepo.findById(qid).get();
+            List<Answer> ansList = getQ.getAnswers();
+            for(Answer ans:ansList){
+                if(ans.aid.equals(aid)){
+                    System.out.println(ans.toString());
+                    getQ.getAnswers().remove(ans);
+                }
+            }        
+                
             questionRepo.save(getQ);
         } catch (Exception e) {
             return false;
@@ -132,10 +135,9 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public boolean addComment(Comment comment, String aid) {
         try {
-            Optional<Answer> ans = answerRepo.findById(aid);
-            Answer an = ans.get();
-            an.getComments().add(comment);
-            answerRepo.save(an);            
+            Answer ans = answerRepo.findById(aid).get();
+            ans.getComments().add(comment);
+            answerRepo.save(ans);            
         } catch (Exception e) {
             return false;
         }

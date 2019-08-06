@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "Answer")
+@Document(collection = "answer")
 public class Answer implements Serializable{
     @Id
     public String aid;
