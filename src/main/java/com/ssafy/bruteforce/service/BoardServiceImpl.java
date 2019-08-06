@@ -24,42 +24,52 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<Question> findAllQuestions() {
-        return null;
+        return questionRepo.findAll();
     }
 
     @Override
-    public Question findQestionById(String qid) {
-        return null;
+    public Question findQuestionById(String qid) {
+        return questionRepo.findById(qid).get();
     }
 
     @Override
     public List<Question> findQuestionByTitle(String title) {
-        return null;
-    }
-
-    @Override
-    public List<Question> findQuestionById(String writerUid) {
-        return null;
+        return questionRepo.findByTitle(title);
     }
 
     @Override
     public List<Question> findQuestionByTag(String[] tag) {
-        return null;
+        return questionRepo.findByTag(tag);
     }
 
     @Override
     public boolean addQuestion(Question question) {
-        return false;
+        try {
+            questionRepo.insert(question);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean updateQuestion(Question question) {
-        return false;
+        try {
+            questionRepo.save(question);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean deleteQuestion(String qid) {
-        return false;
+        try {
+            questionRepo.deleteById(qid);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -67,7 +77,6 @@ public class BoardServiceImpl implements BoardService {
         Optional<Question> optionalQ = questionRepo.findById(qid);
         Question newQ = optionalQ.get();
         newQ.setbClosed(true);
-        
 
         
         return false;
@@ -75,14 +84,16 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<Answer> findAnswerById(String writerUid) {
-        return answerRepo.findByWriterUid(writerUid);
+        return null;
     }
 
-
     @Override
-    public boolean addAnswer(Answer answer) {
+    public boolean addAnswer(Answer answer, String qid) {
         try {
-            answerRepo.insert(answer);            
+            Optional<Question> targetQ = questionRepo.findById(qid);
+            Question getQ = targetQ.get();
+            getQ.getAnswers().add(answer);
+            questionRepo.save(getQ);
         } catch (Exception e) {
             return false;
         }
@@ -100,9 +111,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public boolean deleteAnswer(String aid) {
+    public boolean deleteAnswer(String aid, String qid) {
         try {
-            answerRepo.deleteById("aid");
+            Optional<Question> targetQ = questionRepo.findById(qid);
+            Question getQ = targetQ.get();
+            getQ.getAnswers().remove(answerRepo.findById(aid).get());
+            
+            questionRepo.save(getQ);
         } catch (Exception e) {
             return false;
         }
@@ -111,13 +126,16 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<Comment> findByWriterUid(String writerUid) {
-        return commentRepo.findByWriterUid(writerUid);
+        return null;
     }
 
     @Override
-    public boolean addComment(Comment comment) {
+    public boolean addComment(Comment comment, String aid) {
         try {
-            commentRepo.insert(comment);            
+            Optional<Answer> ans = answerRepo.findById(aid);
+            Answer an = ans.get();
+            an.getComments().add(comment);
+            answerRepo.save(an);            
         } catch (Exception e) {
             return false;
         }

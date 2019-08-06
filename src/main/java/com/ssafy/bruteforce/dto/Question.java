@@ -21,15 +21,14 @@ public class Question implements Serializable{
     public Boolean bClosed;
     public Date timestamp;
     public int score;
-    public List<Answer> answers;
     public List<Comment> comments;
+    public List<Answer> answers;
     private static final long serialVersionUID = 1L;
 
     public Question() {
     }
 
-    public Question(String qid, String title, String contents, String writerUid, String writerName, String[] tag) {
-        this.qid = qid;
+    public Question(String title, String contents, String writerUid, String writerName, String[] tag) {
         this.title = title;
         this.contents = contents;
         this.writerUid = writerUid;

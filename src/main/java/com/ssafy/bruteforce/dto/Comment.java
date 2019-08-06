@@ -18,8 +18,7 @@ public class Comment implements Serializable{
     
     public Comment(){}
     
-    public Comment(String cid, String writerUid, String writerName, String contents) {
-        this.cid = cid;
+    public Comment(String writerUid, String writerName, String contents) {
         this.writerUid = writerUid;
         this.writerName = writerName;
         this.contents = contents;

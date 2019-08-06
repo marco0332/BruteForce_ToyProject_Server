@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository("AnswerRepository")
 public interface AnswerRepository extends MongoRepository<Answer, String> {
-    public List<Answer> findByWriterUid(String writerUid);
+
 }
