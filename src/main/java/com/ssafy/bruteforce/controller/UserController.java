@@ -34,7 +34,7 @@ public class UserController{
 		return new ResponseEntity<String>("true",HttpStatus.OK);
 	}
 
-	@PutMapping(value="/updateUser/{user}")
+	@PutMapping(value="/updateUser")
 	public ResponseEntity<String> updateUser(User user){
 		try{
 			userService.updateUser(user);
@@ -44,44 +44,70 @@ public class UserController{
 		return new ResponseEntity<String>("true",HttpStatus.OK);
 	}
 
-	@DeleteMapping(value="/deleteUser/{id}")
-	public ResponseEntity<String> deleteUser(String id){
+	@DeleteMapping(value="/deleteUserById")
+	public ResponseEntity<String> deleteUserById(String id){
 		try{
-			userService.deleteUser(id);
+			userService.deleteUserById(id);
 		}catch(Exception e){
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<String>("true",HttpStatus.OK);
 	}
 
-	@PutMapping(value="/deactivateUser/{id}")
-	public ResponseEntity<String> deactivateUser(String id){
+	@PutMapping(value="/deactivateUserById")
+	public ResponseEntity<String> deactivateUserById(String id){
 		try{
-			userService.deactivateUser(id);
+			userService.deactivateUserById(id);
 		}catch(Exception e){
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<String>("true",HttpStatus.OK);
 	}
 
-	// public User searchUser(String id);
+	@GetMapping(value="/findAllUserByName")
+	public ResponseEntity<List<User>> findAllUserByName(String name){
+		List<User> users;
+		try{
+			users = userService.findAllUserByName(name);
+			
+		}catch(Exception e){
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<User>>(users,HttpStatus.OK);
+	}
 
 	@PostMapping(value="/login")
-	public ResponseEntity<String> login(User user){
-		boolean result = userService.login(user);
+	public ResponseEntity<String> login(String id, String pw){
+		boolean result = userService.login(id,pw);
 		if(!result){
 			return new ResponseEntity<>("false",HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<String>("true",HttpStatus.OK);
 	}
 
-	//  public boolean idCheck(String id);
+	@PostMapping(value="/existsById")
+	public ResponseEntity<String> existsById(String id){
+		boolean result = userService.existsById(id);
+		if(!result){
+			return new ResponseEntity<>("false",HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<String>("true",HttpStatus.OK);
+	}
 
-	// public List<User> findId(User user);
+	@GetMapping(value="/findUserById/{id}")
+	public ResponseEntity<User> findUserById(@PathVariable String id){
+		User user;
+		try{
+			user = userService.findUserById(id);
+		}catch(Exception e){
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<User>(user,HttpStatus.OK);
+	}
 
-    @GetMapping(value = "/findAllUserQnAInfo/{id}")
-	public ResponseEntity<List<UserQnAInfo>> findAllUserQnAInfo(@PathVariable String id) throws Exception {
-        List<UserQnAInfo> userQnAInfo = userService.findAllUserQnAInfo(id);
+    @GetMapping(value = "/findAllUserQnAInfoById/{id}")
+	public ResponseEntity<List<UserQnAInfo>> findAllUserQnAInfoById(@PathVariable String id) throws Exception {
+        List<UserQnAInfo> userQnAInfo = userService.findAllUserQnAInfoById(id);
 		if (userQnAInfo.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
