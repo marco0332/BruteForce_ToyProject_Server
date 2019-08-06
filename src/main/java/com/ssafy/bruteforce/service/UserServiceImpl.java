@@ -57,8 +57,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean login(User user) {
-        return false;
+    public boolean login(String id, String pw) {
+        Optional<User> oUser = userDao.findById(id);
+        if(oUser.isPresent())
+        {
+            User currentUser = oUser.get();
+            Boolean bLoginResult = currentUser.getPw() == pw ? true : false;
+            return bLoginResult;
+        }
+        else
+        {
+            System.out.println("Error/Login : 존재하지 않는 아이디입니다.");
+            return false;
+        }
     }
 
     @Override
