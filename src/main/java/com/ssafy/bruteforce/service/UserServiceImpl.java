@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAllUserByName(String name) {
-        return null;
+        return userDao.findByNameLike(name);
     }
 
     @Override
