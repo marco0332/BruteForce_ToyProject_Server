@@ -1,9 +1,7 @@
 package com.ssafy.bruteforce.controller;
 
-import java.util.List;
-
+import com.ssafy.bruteforce.dto.ResultJson;
 import com.ssafy.bruteforce.dto.User;
-import com.ssafy.bruteforce.dto.UserQnAInfo;
 import com.ssafy.bruteforce.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/api")
 public class UserController{
@@ -24,93 +24,136 @@ public class UserController{
     @Autowired
 	private UserService userService;
 
+	@ApiOperation(value = "회원 가입")
 	@PostMapping(value="/addUser")
-	public ResponseEntity<String> addUser(User user) {
-		try{
-			userService.addUser(user);
-		}catch(Exception e){
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<ResultJson> addUser(User user) {
+		ResultJson resultJson = userService.addUser(user);
+		switch(resultJson.getState()){
+			case "fail":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.NO_CONTENT);
+			case "unconnect":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.INTERNAL_SERVER_ERROR);
+			default:
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.OK);
 		}
-		return new ResponseEntity<String>("true",HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "회원 정보 수정")
 	@PutMapping(value="/updateUser")
-	public ResponseEntity<String> updateUser(User user){
-		try{
-			userService.updateUser(user);
-		}catch(Exception e){
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<ResultJson> updateUser(User user){
+		ResultJson resultJson = userService.updateUser(user);
+		switch(resultJson.getState()){
+			case "fail":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.NO_CONTENT);
+			case "unconnect":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.INTERNAL_SERVER_ERROR);
+			default:
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.OK);
 		}
-		return new ResponseEntity<String>("true",HttpStatus.OK);
+		
 	}
 
+	@ApiOperation(value = "회원 정보 삭제")
 	@DeleteMapping(value="/deleteUserById")
-	public ResponseEntity<String> deleteUserById(String id){
-		try{
-			userService.deleteUserById(id);
-		}catch(Exception e){
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<ResultJson> deleteUserById(String id){
+		ResultJson resultJson = userService.deleteUserById(id);
+		switch(resultJson.getState()){
+			case "fail":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.NO_CONTENT);
+			case "unconnect":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.INTERNAL_SERVER_ERROR);
+			default:
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.OK);
 		}
-		return new ResponseEntity<String>("true",HttpStatus.OK);
+		
 	}
 
+	@ApiOperation(value = "답변 채택시 수정 불가")
 	@PutMapping(value="/deactivateUserById")
-	public ResponseEntity<String> deactivateUserById(String id){
-		try{
-			userService.deactivateUserById(id);
-		}catch(Exception e){
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<ResultJson> deactivateUserById(String id){
+		ResultJson resultJson = userService. deactivateUserById(id);
+		switch(resultJson.getState()){
+			case "fail":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.NO_CONTENT);
+			case "unconnect":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.INTERNAL_SERVER_ERROR);
+			default:
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.OK);
 		}
-		return new ResponseEntity<String>("true",HttpStatus.OK);
+		
 	}
 
-	@GetMapping(value="/findAllUserByName")
-	public ResponseEntity<List<User>> findAllUserByName(String name){
-		List<User> users;
-		try{
-			users = userService.findAllUserByName(name);
-			
-		}catch(Exception e){
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	@ApiOperation(value = "이름으로 전체 회원 찾기")
+	@GetMapping(value="/findAllUserByName/{name}")
+	public ResponseEntity<ResultJson> findAllUserByName(@PathVariable String name){
+		ResultJson resultJson = userService.findAllUserByName(name);
+		switch(resultJson.getState()){
+			case "fail":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.NO_CONTENT);
+			case "unconnect":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.INTERNAL_SERVER_ERROR);
+			default:
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.OK);
 		}
-		return new ResponseEntity<List<User>>(users,HttpStatus.OK);
+		
 	}
 
+	@ApiOperation(value = "로그인")
 	@PostMapping(value="/login")
-	public ResponseEntity<String> login(String id, String pw){
-		boolean result = userService.login(id,pw);
-		if(!result){
-			return new ResponseEntity<>("false",HttpStatus.NO_CONTENT);
+	public ResponseEntity<ResultJson> login(String id, String pw){
+		ResultJson resultJson = userService.login(id, pw);
+		switch(resultJson.getState()){
+			case "fail":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.NO_CONTENT);
+			case "unconnect":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.INTERNAL_SERVER_ERROR);
+			default:
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.OK);
 		}
-		return new ResponseEntity<String>("true",HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "ID 중복체크")
 	@PostMapping(value="/existsById")
-	public ResponseEntity<String> existsById(String id){
-		boolean result = userService.existsById(id);
-		if(!result){
-			return new ResponseEntity<>("false",HttpStatus.NO_CONTENT);
+	public ResponseEntity<ResultJson> existsById(String id){
+		ResultJson resultJson = userService.existsById(id);
+		switch(resultJson.getState()){
+			case "fail":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.NO_CONTENT);
+			case "unconnect":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.INTERNAL_SERVER_ERROR);
+			default:
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.OK);
 		}
-		return new ResponseEntity<String>("true",HttpStatus.OK);
+		
 	}
 
+	@ApiOperation(value = "ID로 유저 찾기")
 	@GetMapping(value="/findUserById/{id}")
-	public ResponseEntity<User> findUserById(@PathVariable String id){
-		User user;
-		try{
-			user = userService.findUserById(id);
-		}catch(Exception e){
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<ResultJson> findUserById(@PathVariable String id){
+		ResultJson resultJson = userService.findUserById(id);
+		switch(resultJson.getState()){
+			case "fail":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.NO_CONTENT);
+			case "unconnect":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.INTERNAL_SERVER_ERROR);
+			default:
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.OK);
 		}
-		return new ResponseEntity<User>(user,HttpStatus.OK);
+		
 	}
 
+	@ApiOperation(value = "ID에 해당하는 모든 게시글 찾기")
     @GetMapping(value = "/findAllUserQnAInfoById/{id}")
-	public ResponseEntity<List<UserQnAInfo>> findAllUserQnAInfoById(@PathVariable String id) throws Exception {
-        List<UserQnAInfo> userQnAInfo = userService.findAllUserQnAInfoById(id);
-		if (userQnAInfo.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<ResultJson> findAllUserQnAInfoById(@PathVariable String id) throws Exception {
+		ResultJson resultJson = userService.findAllUserQnAInfoById(id);
+		switch(resultJson.getState()){
+			case "fail":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.NO_CONTENT);
+			case "unconnect":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.INTERNAL_SERVER_ERROR);
+			default:
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.OK);
 		}
-		return new ResponseEntity<List<UserQnAInfo>>(userQnAInfo, HttpStatus.OK);
+
 	}
 }

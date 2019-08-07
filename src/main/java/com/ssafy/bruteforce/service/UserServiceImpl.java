@@ -1,8 +1,10 @@
 package com.ssafy.bruteforce.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import com.ssafy.bruteforce.dto.ResultJson;
 import com.ssafy.bruteforce.dto.User;
 import com.ssafy.bruteforce.dto.UserQnAInfo;
 import com.ssafy.bruteforce.repository.UserRepository;
@@ -17,61 +19,137 @@ public class UserServiceImpl implements UserService {
     UserRepository userDao;
 
     @Override
-    public void addUser(User user) {
-        userDao.insert(user);
-    }
+    public ResultJson addUser(User user) {
+        
+        ResultJson resultJson = new ResultJson();
+        try{
+            if( userDao.existsById(user.getUserid()) ){
+                resultJson.setStaeFail();
+                resultJson.setMessage("ID already exist");
 
-    @Override
-    public void updateUser(User user) {
-        userDao.save(user);
-    }
-
-    @Override
-    public void deleteUserById(String id) {
-        userDao.deleteById(id);
-    }
-
-    @Override
-    public void deactivateUserById(String id) {
-        User deactivatedUser = userDao.findById(id).get();
-        if (deactivatedUser.getbDeactivated()) {
-            System.out.println("Error/deactivateUser : 이미 비활성화된 계정");
-            return;
+            }else{
+                userDao.insert(user);
+            }
+		}catch(Exception e){
+            resultJson.setStateUnconnect();
+			resultJson.setMessage("Server Error");
         }
-        deactivatedUser.setbDeactivated(true);
-        userDao.save(deactivatedUser);
+        return resultJson;
     }
 
     @Override
-    public List<User> findAllUserByName(String name) {
-        return userDao.findByNameLike(name);
-    }
-
-    @Override
-    public boolean login(String id, String pw) {
-        Optional<User> user = userDao.findById(id);
-        if (user.isPresent()) {
-            User currentUser = user.get();
-            Boolean bLoginResult = currentUser.getPw() == pw ? true : false;
-            return bLoginResult;
+    public ResultJson updateUser(User user) {
+        ResultJson resultJson = new ResultJson();
+		try{
+            userDao.save(user);
+		}catch(Exception e){
+			resultJson.setStateUnconnect();
+			resultJson.setMessage("Server Error");
         }
-        System.out.println("Error/Login : 존재하지 않는 아이디입니다.");
-        return false;
+        return resultJson;
     }
 
     @Override
-    public boolean existsById(String id) {
-        return userDao.existsById(id);
+    public ResultJson deleteUserById(String id) {
+        ResultJson resultJson = new ResultJson();
+		try{
+			userDao.deleteById(id);
+        }catch(Exception e){
+			resultJson.setStateUnconnect();
+			resultJson.setMessage("Server Error");
+        }
+        return resultJson;
     }
 
     @Override
-    public User findUserById(String id) {
-        return userDao.findById(id).get();
+    public ResultJson deactivateUserById(String id) {
+        ResultJson resultJson = new ResultJson();
+        try{
+            User deactivatedUser = userDao.findById(id).get();
+            deactivatedUser.setbDeactivated(true);
+            userDao.save(deactivatedUser);
+        }catch(Exception e){
+            resultJson.setStateUnconnect();
+			resultJson.setMessage("Server Error");
+        }
+        return resultJson;
     }
 
     @Override
-    public List<UserQnAInfo> findAllUserQnAInfoById(String id) {
-        return null;
+    public ResultJson findAllUserByName(String name) {
+        ResultJson resultJson = new ResultJson();
+        try{
+            List<User> users = userDao.findByNameLike(name);
+            resultJson.setContents(users);
+        }catch(NoSuchElementException e){
+            resultJson.setStaeFail();
+            resultJson.setMessage("No Such Element");
+        }catch(Exception e){
+            resultJson.setStateUnconnect();
+            resultJson.setMessage("Server Error");
+        }
+        return resultJson;
+    }
+
+    @Override
+    public ResultJson login(String id, String pw) {
+        ResultJson resultJson = new ResultJson();
+        try{
+            User user = userDao.findById(id).get();
+            
+            if( user.getbDeactivated() || !user.getPw().equals(pw) ){
+                resultJson.setMessage("계정이 없거나 비밀번호가 일치하지 않습니다.");
+                resultJson.setStaeFail();                
+            }else{
+                resultJson.setContents(user);
+            }
+        
+        }catch(NoSuchElementException e){
+            resultJson.setStaeFail();
+            resultJson.setMessage("계정이 없거나 비밀번호가 일치하지 않습니다.");
+        }catch(Exception e){
+            resultJson.setStateUnconnect();
+            resultJson.setMessage("Server Error");
+        }
+        return resultJson;
+    }
+
+    @Override
+    public ResultJson existsById(String id) {
+        ResultJson resultJson = new ResultJson();
+        try{
+            resultJson.setContents(userDao.existsById(id));
+        }catch(Exception e){
+            resultJson.setStateUnconnect();
+            resultJson.setMessage("Server Error");
+        }
+        return resultJson;
+    }
+
+    @Override
+    public ResultJson findUserById(String id) {
+        ResultJson resultJson = new ResultJson();
+        try{
+            User user = userDao.findById(id).get();
+            resultJson.setContents(user);
+        }catch(Exception e){
+            resultJson.setStateUnconnect();
+            resultJson.setMessage("Server Error");
+        }
+        return resultJson;
+    }
+
+    @Override
+    public ResultJson findAllUserQnAInfoById(String id) {
+        ResultJson resultJson = new ResultJson();
+        try{
+            
+        }catch(NoSuchElementException e){
+
+        }catch(Exception e){
+
+        }
+        return resultJson;
     }
 
 }
