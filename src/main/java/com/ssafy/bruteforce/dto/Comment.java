@@ -3,6 +3,7 @@ package com.ssafy.bruteforce.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,6 +20,7 @@ public class Comment implements Serializable{
     public Comment(){}
     
     public Comment(String writerUid, String writerName, String contents) {
+        this.cid = new ObjectId().toString();
         this.writerUid = writerUid;
         this.writerName = writerName;
         this.contents = contents;

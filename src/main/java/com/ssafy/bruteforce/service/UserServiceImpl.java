@@ -2,11 +2,9 @@ package com.ssafy.bruteforce.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import com.ssafy.bruteforce.dto.ResultJson;
 import com.ssafy.bruteforce.dto.User;
-import com.ssafy.bruteforce.dto.UserQnAInfo;
 import com.ssafy.bruteforce.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
