@@ -1,7 +1,5 @@
 package com.ssafy.bruteforce.service;
 
-import java.util.List;
-
 import com.ssafy.bruteforce.dto.Answer;
 import com.ssafy.bruteforce.dto.Comment;
 import com.ssafy.bruteforce.dto.Question;

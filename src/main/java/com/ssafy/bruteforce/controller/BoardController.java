@@ -50,14 +50,14 @@ public class BoardController{
         return new ResponseEntity<Question>(question, HttpStatus.OK);
     }
     
-    @GetMapping(value="/findQuestionByTitle/{title}")
-    public ResponseEntity<List<Question>> findQuestionByTitle(@PathVariable String title) throws Exception {
-        List<Question> question = boardService.findQuestionByTitle(title);
-		if (question.isEmpty()) { 
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-        return new ResponseEntity<List<Question>>(question, HttpStatus.OK);
-    }
+    // @GetMapping(value="/findQuestionByTitle/{title}")
+    // public ResponseEntity<List<Question>> findQuestionByTitle(@PathVariable String title) throws Exception {
+    //     List<Question> question = boardService.findQuestionByTitle(title);
+	// 	if (question.isEmpty()) { 
+	// 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	// 	}
+    //     return new ResponseEntity<List<Question>>(question, HttpStatus.OK);
+    // }
 
     // @GetMapping(value="/findQuestionById/{writerUid}")
     // public ResponseEntity<List<Question>> findWriterById(@PathVariable String writerUid) throws Exception {
