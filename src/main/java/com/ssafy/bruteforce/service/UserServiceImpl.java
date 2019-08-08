@@ -22,11 +22,12 @@ public class UserServiceImpl implements UserService {
         ResultJson resultJson = new ResultJson();
         try{
             if( userDao.existsById(user.getUserid()) ){
-                resultJson.setStaeFail();
+                resultJson.setStateFail();
                 resultJson.setMessage("ID already exist");
-
+                resultJson.setContents(false);
             }else{
                 userDao.insert(user);
+                resultJson.setContents(true);
             }
 		}catch(Exception e){
             resultJson.setStateUnconnect();
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
         ResultJson resultJson = new ResultJson();
 		try{
             userDao.save(user);
+            resultJson.setContents(true);
 		}catch(Exception e){
 			resultJson.setStateUnconnect();
 			resultJson.setMessage("Server Error");
@@ -51,7 +53,8 @@ public class UserServiceImpl implements UserService {
     public ResultJson deleteUserById(String id) {
         ResultJson resultJson = new ResultJson();
 		try{
-			userDao.deleteById(id);
+            userDao.deleteById(id);
+            resultJson.setContents(true);
         }catch(Exception e){
 			resultJson.setStateUnconnect();
 			resultJson.setMessage("Server Error");
@@ -66,6 +69,7 @@ public class UserServiceImpl implements UserService {
             User deactivatedUser = userDao.findById(id).get();
             deactivatedUser.setbDeactivated(true);
             userDao.save(deactivatedUser);
+            resultJson.setContents(true);
         }catch(Exception e){
             resultJson.setStateUnconnect();
 			resultJson.setMessage("Server Error");
@@ -80,8 +84,9 @@ public class UserServiceImpl implements UserService {
             List<User> users = userDao.findByNameLike(name);
             resultJson.setContents(users);
         }catch(NoSuchElementException e){
-            resultJson.setStaeFail();
+            resultJson.setStateFail();
             resultJson.setMessage("No Such Element");
+            resultJson.setContents(false);
         }catch(Exception e){
             resultJson.setStateUnconnect();
             resultJson.setMessage("Server Error");
@@ -97,13 +102,15 @@ public class UserServiceImpl implements UserService {
             
             if( user.getbDeactivated() || !user.getPw().equals(pw) ){
                 resultJson.setMessage("계정이 없거나 비밀번호가 일치하지 않습니다.");
-                resultJson.setStaeFail();                
+                resultJson.setStateFail();
+                resultJson.setContents(false);           
             }else{
                 resultJson.setContents(user);
             }
         
         }catch(NoSuchElementException e){
-            resultJson.setStaeFail();
+            resultJson.setStateFail();
+            resultJson.setContents(false);
             resultJson.setMessage("계정이 없거나 비밀번호가 일치하지 않습니다.");
         }catch(Exception e){
             resultJson.setStateUnconnect();

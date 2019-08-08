@@ -1,13 +1,10 @@
 package com.ssafy.bruteforce.controller;
 
-import java.util.List;
-
-
 import com.ssafy.bruteforce.dto.Comment;
 import com.ssafy.bruteforce.dto.Answer;
 import com.ssafy.bruteforce.dto.Question;
+import com.ssafy.bruteforce.dto.ResultJson;
 import com.ssafy.bruteforce.service.BoardService;
-import com.ssafy.bruteforce.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,9 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.models.Response;
-
-import org.springframework.web.bind.annotation.RequestBody;
+import io.swagger.annotations.ApiOperation;
 
 
 @RestController
@@ -32,157 +27,134 @@ public class BoardController{
     @Autowired
     private BoardService boardService;
 
+    @ApiOperation(value = "모든 질문 가져오기")
     @GetMapping(value = "/findAllQuestions")
-	public ResponseEntity<List<Question>> findAllQuestions() throws Exception {
-        List<Question> userQnAInfo = boardService.findAllQuestions();
-		if (userQnAInfo.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-        return new ResponseEntity<List<Question>>(userQnAInfo, HttpStatus.OK);
+	public ResponseEntity<ResultJson> findAllQuestions() {
+        ResultJson resultJson = boardService.findAllQuestions();
+        return responseFunction(resultJson);
     }
 
-    @GetMapping(value="/findQestionById/{qid}")
-    public ResponseEntity<Question> findQestionById(@PathVariable String qid) throws Exception {
-        Question question = boardService.findQuestionById(qid);
-		if (question==null) { 
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-        return new ResponseEntity<Question>(question, HttpStatus.OK);
+    @ApiOperation(value = "질문ID로 상세보기")
+    @GetMapping(value="/findQuestionById/{qid}")
+    public ResponseEntity<ResultJson> findQuestionById(@PathVariable String qid)  {
+        ResultJson resultJson = boardService.findQuestionById(qid);
+        return responseFunction(resultJson);
     }
     
-    // @GetMapping(value="/findQuestionByTitle/{title}")
-    // public ResponseEntity<List<Question>> findQuestionByTitle(@PathVariable String title) throws Exception {
-    //     List<Question> question = boardService.findQuestionByTitle(title);
-	// 	if (question.isEmpty()) { 
-	// 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	// 	}
-    //     return new ResponseEntity<List<Question>>(question, HttpStatus.OK);
-    // }
+    @ApiOperation(value = "제목으로 질문 찾기")
+    @GetMapping(value="/findQuestionByTitle/{title}")
+    public ResponseEntity<ResultJson> findQuestionByTitle(@PathVariable String title)  {
+        ResultJson resultJson = boardService.findQuestionByTitle(title);
+        return responseFunction(resultJson);
+    }
 
-    // @GetMapping(value="/findQuestionById/{writerUid}")
-    // public ResponseEntity<List<Question>> findWriterById(@PathVariable String writerUid) throws Exception {
-    //     List<Question> question = boardService.findQuestionById(writerUid);
-	// 	if (question.isEmpty()) { 
-	// 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	// 	}
-    //     return new ResponseEntity<List<Question>>(question, HttpStatus.OK);
-    // }
-
+    @ApiOperation(value = "태그로 찾아보기")
     @GetMapping(value="/findQuestionByTag/{tag}")
-    public ResponseEntity<List<Question>> findQuestionByTag(@PathVariable String[] tag) throws Exception {
-        List<Question> question = boardService.findQuestionByTag(tag);
-		if (question.isEmpty()) { 
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<ResultJson> findQuestionByTag(@PathVariable String[] tag)  {
+        ResultJson resultJson = boardService.findQuestionByTag(tag);
+        return responseFunction(resultJson);
+    }
+
+    @ApiOperation(value = "질문 등록")
+    @PostMapping(value="/addQuestion")
+    public ResponseEntity<ResultJson> addQuestion(Question question)  {
+        ResultJson resultJson = boardService.addQuestion(question);
+        return responseFunction(resultJson);
+    }
+
+    @ApiOperation(value = "질문 수정")
+    @PutMapping(value="/updateQuestion")
+    public ResponseEntity<ResultJson> updateQuestion(Question question) {
+        ResultJson resultJson = boardService.updateQuestion(question);
+        return responseFunction(resultJson);
+    }
+
+    @ApiOperation(value = "질문 삭제")
+    @DeleteMapping(value="/deleteQuestion")
+    public ResponseEntity<ResultJson> deleteQuestion(String qid) {
+        ResultJson resultJson = boardService.deleteQuestion(qid);
+        return responseFunction(resultJson);
+    }
+
+    @ApiOperation(value = "답변 채택")
+    @PutMapping(value="/closedUpdate")
+    public ResponseEntity<ResultJson> closedUpdate(String qid, String aid) {
+        ResultJson resultJson = boardService.closedUpdate(qid,aid);
+        return responseFunction(resultJson);
+    }
+
+    @ApiOperation(value = "답변 등록")
+    @PostMapping(value="/addAnswer")
+    public ResponseEntity<ResultJson> addAnswer(String qid, Answer answer) {
+        ResultJson resultJson = boardService.addAnswer(qid,answer);
+        return responseFunction(resultJson);
+    }
+
+    @ApiOperation(value = "답변 수정")
+    @PutMapping(value="/updateAnswer")
+    public ResponseEntity<ResultJson> updateAnswer(String qid, String aid, String contents) {
+        ResultJson resultJson = boardService.updateAnswer(qid,aid,contents);
+        return responseFunction(resultJson);
+    }
+
+    @ApiOperation(value = "답변 삭제")
+    @DeleteMapping(value="/deleteAnswer")
+    public ResponseEntity<ResultJson> deleteAnswer(String qid, String aid) {
+        ResultJson resultJson = boardService.deleteAnswer(qid,aid);
+        return responseFunction(resultJson);
+    }
+
+    @ApiOperation(value = "질문 댓글 등록")
+    @PostMapping(value="/addQuestionComment")
+    public ResponseEntity<ResultJson> addQuestionComment(String qid, Comment comment) {
+        ResultJson resultJson = boardService.addQuestionComment(qid,comment);
+        return responseFunction(resultJson);
+    }
+
+    @ApiOperation(value = "답변 댓글 등록")
+    @PostMapping(value="/addAnswerComment")
+    public ResponseEntity<ResultJson> addAnswerComment(String qid, String aid, Comment comment) {
+        ResultJson resultJson = boardService.addAnswerComment(qid,aid,comment);
+        return responseFunction(resultJson);
+    }
+
+    @ApiOperation(value = "질문 댓글 수정")
+    @PutMapping(value="/updateQuestionComment")
+    public ResponseEntity<ResultJson> updateQuestionComment(String qid, String cid, String contents) {
+        ResultJson resultJson = boardService.updateQuestionComment(qid,cid,contents);
+        return responseFunction(resultJson);
+    }
+
+    @ApiOperation(value = "답변 댓글 수정")
+    @PutMapping(value="/updateAnswerComment")
+    public ResponseEntity<ResultJson> updateAnswerComment(String qid, String aid, String cid, String contents) {
+        ResultJson resultJson = boardService.updateAnswerComment(qid,aid,cid,contents);
+        return responseFunction(resultJson);
+    }
+
+    @ApiOperation(value = "질문 댓글 삭제")
+    @DeleteMapping(value="/deleteQuestionComment")
+    public ResponseEntity<ResultJson> deleteQuestionComment(String qid, String cid) {
+        ResultJson resultJson = boardService.deleteQuestionComment(qid,cid);
+        return responseFunction(resultJson);
+    }
+
+    @ApiOperation(value = "답변 댓글 삭제")
+    @DeleteMapping(value="/deleteAnswerComment")
+    public ResponseEntity<ResultJson> deleteAnswerComment(String qid, String aid, String cid) {
+        ResultJson resultJson = boardService.deleteAnswerComment(qid,aid,cid);
+        return responseFunction(resultJson);
+    }
+
+    private ResponseEntity<ResultJson> responseFunction(ResultJson resultJson) {
+		switch(resultJson.getState()){
+			case "fail":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.NO_CONTENT);
+			case "unconnect":
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.INTERNAL_SERVER_ERROR);
+			default:
+				return new ResponseEntity<ResultJson>(resultJson,HttpStatus.OK);
 		}
-        return new ResponseEntity<List<Question>>(question, HttpStatus.OK);
-    }
-
-    // @PostMapping(value="/addQuestion")
-    // public ResponseEntity<String> addQuestion(Question question) throws Exception {
-    //     boolean result = boardService.addQuestion(question);
-	// 	if (!result) { 
-	// 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	// 	}
-    //     return new ResponseEntity<String>("true", HttpStatus.OK);
-    // }
-
-    // @PutMapping(value="/updateQuestion")
-    // public ResponseEntity<String> updateQuestion(Question question) throws Exception{
-    //     boolean result = boardService.updateQuestion(question);
-    //     if(!result){
-    //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    //     }
-    //     return new ResponseEntity<String>("true",HttpStatus.OK);
-    // }
-
-    // @DeleteMapping(value="/deleteQuestion")
-    // public ResponseEntity<String> deleteQuestion(String qid) throws Exception{
-    //     boolean result = boardService.deleteAnswer(qid);
-    //     if(!result){
-    //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    //     }
-    //     return new ResponseEntity<String>("true",HttpStatus.OK);
-    // }
-
-    // @PutMapping(value="/cloedUpdate")
-    // public ResponseEntity<String> cloedUpdate(Question question,String aid) throws Exception{
-    //     boolean result = boardService.closedUpdate(question, aid);
-    //     if(!result){
-    //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    //     }
-    //     return new ResponseEntity<String>("true",HttpStatus.OK);
-    // }
-
-    @GetMapping(value="/findAnswerById")
-    public ResponseEntity<List<Answer>> findAnswerById(String writerUid) throws Exception{
-        List<Answer> answers = boardService.findAnswerById(writerUid);
-        if(answers.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<List<Answer>>(answers,HttpStatus.OK);
-    }
-
-    // @PostMapping(value="/addAnswer")
-    // public ResponseEntity<String> addAnswer(Answer answer, String qid) throws Exception{
-    //     boolean result = boardService.addAnswer(answer, qid);
-    //     if(!result){
-    //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    //     }
-    //     return new ResponseEntity<String>("true",HttpStatus.OK);
-    // }
-
-    // @PutMapping(value="/updateAnswer")
-    // public ResponseEntity<String> updateAnswer(Answer answer, String qid) throws Exception{
-    //     boolean result = boardService.updateAnswer(answer, qid);
-    //     if(!result){
-    //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    //     }
-    //     return new ResponseEntity<String>("true",HttpStatus.OK);
-    // }
-
-    // @DeleteMapping(value="/deleteAnswer")
-    // public ResponseEntity<String> deleteAnswer(String aid, String qid) throws Exception{
-    //     boolean result = boardService.deleteAnswer(aid, qid);
-    //     if(!result){
-    //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    //     }
-    //     return new ResponseEntity<String>("true",HttpStatus.OK);
-    // }
-
-    // @GetMapping(value="/findCommentById")
-    // public ResponseEntity<List<Comment>> findCommentById(String writerUid,String qid) throws Exception{
-    //     List<Comment> comments = boardService.findCommentById(writerUid, qid);
-    //     if(comments.isEmpty()){
-    //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    //     }
-    //     return new ResponseEntity<List<Comment>>(comments,HttpStatus.OK);
-    // }
-
-    // @PostMapping(value="/addComment")
-    // public ResponseEntity<String> addComment(Comment comment, String qid) throws Exception{
-    //     boolean result = boardService.addComment(comment, qid);
-    //     if(!result){
-    //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    //     }
-    //     return new ResponseEntity<String>("true",HttpStatus.OK);
-    // }
-
-    // @PutMapping(value="/updateComment")
-    // public ResponseEntity<String> updateComment(Comment comment, String qid) throws Exception{
-    //     boolean result = boardService.updateComment(comment, qid);
-    //     if(!result){
-    //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    //     }
-    //     return new ResponseEntity<String>("true",HttpStatus.OK);
-    // }
-
-    // @DeleteMapping(value="/deleteComment")
-    // public ResponseEntity<String> deleteComment(String cid,String qid) throws Exception{
-    //     boolean result = boardService.deleteAnswer(cid, qid);
-    //     if(!result){
-    //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    //     }
-    //     return new ResponseEntity<String>("true",HttpStatus.OK);
-    // }
+	}
     
 }
