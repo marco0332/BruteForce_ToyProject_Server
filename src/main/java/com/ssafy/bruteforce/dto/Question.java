@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -29,6 +30,7 @@ public class Question implements Serializable{
     }
 
     public Question(String title, String contents, String writerUid, String writerName, String[] tag) {
+        this.qid = new ObjectId().toString();
         this.title = title;
         this.contents = contents;
         this.writerUid = writerUid;
