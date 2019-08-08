@@ -22,7 +22,7 @@ public class ResultJson implements Serializable {
         this.state = state;
     }
 
-    public void setStaeFail(){
+    public void setStateFail(){
         setState("fail");
     }
 
