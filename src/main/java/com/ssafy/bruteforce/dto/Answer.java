@@ -9,10 +9,12 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "answer")
+@Document(collection = "board")
 public class Answer implements Serializable{
     @Id
     public String aid;
+    public String qid;
+    public String type;
     public String writerUid;
     public String writerName;
     public String contents;
@@ -24,8 +26,10 @@ public class Answer implements Serializable{
 
     public Answer(){}
 
-    public Answer(String writerUid, String writerName, String contents) {
+    public Answer(String qid, String writerUid, String writerName, String contents) {
         this.aid = new ObjectId().toString();
+        this.qid = qid;
+        this.type = "answer";
         this.writerUid = writerUid;
         this.writerName = writerName;
         this.contents = contents;
@@ -93,8 +97,8 @@ public class Answer implements Serializable{
 
     @Override
     public String toString() {
-        return "Answer [score=" + score + ", aid=" + aid + ", bSelection=" + bSelection + ", comments=" + comments.toString() + ", contents=" + contents
-                + ", timestamp=" + timestamp + ", writerName=" + writerName + ", writerUid=" + writerUid + "]";
+        return "Answer [score=" + score + ",type=" + type + ", qid=" + qid + ", aid=" + aid + ", bSelection=" + bSelection + ", comments=" + comments.toString() + ", contents=" + contents
+                + ", timestamp=" + timestamp + ", writerName=" + writerName + ", writerUid=" + writerUid + "]\n";
     }
 
     public int getScore() {
@@ -103,6 +107,22 @@ public class Answer implements Serializable{
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public String getQid() {
+        return qid;
+    }
+
+    public void setQid(String qid) {
+        this.qid = qid;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     

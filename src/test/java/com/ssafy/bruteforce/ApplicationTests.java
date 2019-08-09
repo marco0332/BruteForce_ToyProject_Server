@@ -1,7 +1,11 @@
 package com.ssafy.bruteforce;
 
 
+import com.ssafy.bruteforce.dto.Answer;
+import com.ssafy.bruteforce.dto.Comment;
+import com.ssafy.bruteforce.dto.Question;
 import com.ssafy.bruteforce.dto.User;
+import com.ssafy.bruteforce.service.BoardService;
 import com.ssafy.bruteforce.service.UserService;
 
 import org.junit.Test;
@@ -13,6 +17,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ApplicationTests {
+
+    @Autowired
+    BoardService boardTest;
 
     @Autowired
     UserService userTest;
@@ -43,5 +50,24 @@ public class ApplicationTests {
         userTest.deleteUserById("2");
         userTest.deleteUserById("3");
         userTest.deleteUserById("4");
-	}
+    }
+    
+    @Test
+    public void boardTest() {
+        // boardTest.addQuestion(new Question("qtitle","qcontents","qwriterid","qwritername",new String[] {"java","cpp"}));
+        // boardTest.addQuestion(new Question("qtitle2","qcontents2","qwriterid2","qwritername2",new String[] {"java","cpp"}));
+        // boardTest.addAnswer(new Answer("5d4d1e4a61cbaa4e607bd9cf","acontents","ariterid","awritername"));
+        // boardTest.addAnswer(new Answer("5d4d1e4a61cbaa4e607bd9cf", "acontents2","ariterid2","awritername2"));
+        // boardTest.addAnswer(new Answer("5d4d1e4a61cbaa4e607bd9cf", "acontents3","ariterid3","awritername3"));
+        // boardTest.addAnswer(new Answer("5d4d1e4b61cbaa4e607bd9d0","a2contents","a2riterid","a2writername"));
+        // boardTest.addAnswer(new Answer("5d4d1e4b61cbaa4e607bd9d0", "a2contents2","a2riterid2","a2writername2"));
+        // boardTest.addAnswer(new Answer("5d4d1e4b61cbaa4e607bd9d0", "a2contents3","a2riterid3","a2writername3"));
+        // boardTest.findByQid("5d4cd49161cbaa3bccb103b6");
+        // boardTest.addQuestionComment("5d4d1e4a61cbaa4e607bd9cf", new Comment("cwriterid","cwriterName","ccontents"));
+        // boardTest.addAnswerComment("5d4d1e8461cbaa50e8d3c0d1", new Comment("cwriterid2","cwriterName2","ccontents2"));
+        // boardTest.findAllQuestions();
+        // boardTest.findQuestionByTitle("qtitle");
+        // boardTest.updateQuestion("5d4d1e4a61cbaa4e607bd9cf", "qtitleupdate","qcontentsupdate",new String[] {"update","tag"});
+
+    }
 }
