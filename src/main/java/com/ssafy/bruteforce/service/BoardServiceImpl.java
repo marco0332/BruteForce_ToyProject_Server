@@ -1,11 +1,14 @@
 package com.ssafy.bruteforce.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.ssafy.bruteforce.dto.Answer;
 import com.ssafy.bruteforce.dto.Comment;
 import com.ssafy.bruteforce.dto.Question;
 import com.ssafy.bruteforce.dto.ResultJson;
+import com.ssafy.bruteforce.repository.AnswerRepository;
 import com.ssafy.bruteforce.repository.BoardRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,27 +20,18 @@ public class BoardServiceImpl implements BoardService {
     @Autowired
     private BoardRepository boardDao;
 
+    @Autowired
+    private AnswerRepository answerDao;
+
     @Override
     public ResultJson findAllQuestions() {
         ResultJson resultJson = new ResultJson();
         try {
-            resultJson.setContents(boardDao.findAll());
+            resultJson.setContents(boardDao.findByType("question"));
         } catch (NoSuchElementException e) {
             resultJson.setStateFail();
             resultJson.setMessage("No Such Element");
             resultJson.setContents(false);
-        } catch (Exception e) {
-            resultJson.setStateUnconnect();
-            resultJson.setMessage("Server Error");
-        }
-        return resultJson;
-    }
-
-    @Override
-    public ResultJson findQuestionById(String qid) {
-        ResultJson resultJson = new ResultJson();
-        try {
-            resultJson.setContents(boardDao.findById(qid).get());
         } catch (Exception e) {
             resultJson.setStateUnconnect();
             resultJson.setMessage("Server Error");
@@ -62,10 +56,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResultJson findQuestionByTag(String[] tag) {
+    public ResultJson findByQid(String qid) {
         ResultJson resultJson = new ResultJson();
         try {
-            resultJson.setContents(boardDao.findByTag(tag));
+            List<Object> objlist = new ArrayList<>();
+            objlist.add(boardDao.findById(qid).get());
+            objlist.add(answerDao.findByQid(qid));
+            resultJson.setContents(objlist);
         } catch (NoSuchElementException e) {
             resultJson.setStateFail();
             resultJson.setMessage("No Such Element");
@@ -78,11 +75,29 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public ResultJson findQuestionByTag(int[] tag, int size) {
+        List<Question> list = boardDao.findByType("question");
+        List<Question> returnList = new ArrayList<>();
+        for(Question q : list){
+            int equalCnt = 0;
+            for(int i=0; i<q.getTag().length; i++){
+                if(tag[q.tag[i]]==1){
+                    equalCnt++;
+                }
+            }
+            if(equalCnt==size){
+                returnList.add(q);
+            }
+        }
+        System.out.println(returnList.toString());
+        return null;
+    }
+
+    @Override
     public ResultJson addQuestion(Question question) {
         ResultJson resultJson = new ResultJson();
         try {
             boardDao.insert(question);
-            resultJson.setContents(true);
         } catch (Exception e) {
             resultJson.setStateUnconnect();
             resultJson.setMessage("Server Error");
@@ -91,10 +106,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResultJson updateQuestion(Question question) {
+    public ResultJson updateQuestion(String qid, String title, String contents, int[] tag){
         ResultJson resultJson = new ResultJson();
         try {
-            boardDao.save(question);
+            Question getQ = boardDao.findById(qid).get();
+            getQ.setTitle(title);
+            getQ.setContents(contents);
+            getQ.setTag(tag);
+            boardDao.save(getQ);
             resultJson.setContents(true);
         } catch (Exception e) {
             resultJson.setStateUnconnect();
@@ -114,9 +133,57 @@ public class BoardServiceImpl implements BoardService {
                 resultJson.setContents(false);
             }else{
                 boardDao.deleteById(qid);
+                answerDao.deleteByQid(qid);
                 resultJson.setContents(true);
             }
         } catch (Exception e) {
+            resultJson.setStateUnconnect();
+            resultJson.setMessage("Server Error");
+        }
+        return resultJson;
+    }
+
+    @Override
+    public ResultJson addAnswer(Answer answer) {
+        ResultJson resultJson = new ResultJson();
+        try {
+            answerDao.insert(answer);
+            resultJson.setContents(boardDao.findAll());
+        } catch (Exception e) {
+            resultJson.setStateUnconnect();
+            resultJson.setMessage("Server Error");
+        }
+        return resultJson;
+    }
+
+    @Override
+    public ResultJson updateAnswer(String aid, String contents) {
+        ResultJson resultJson = new ResultJson();
+        try {
+            Answer getA = answerDao.findById(aid).get();
+            getA.setContents(contents);
+            answerDao.save(getA);
+            resultJson.setContents(true);
+        } catch (Exception e) {
+            resultJson.setStateUnconnect();
+            resultJson.setMessage("Server Error");
+        }
+        return resultJson;
+    }
+
+    @Override
+    public ResultJson deleteAnswer(String aid) {
+        ResultJson resultJson = new ResultJson();
+        try {
+            if(answerDao.findById(aid).get().isbSelection()){
+                resultJson.setStateFail();
+                resultJson.setMessage("채택되었기 때문에 삭제 불가");
+                resultJson.setContents(false);
+            }else{
+                answerDao.deleteById(aid);
+                resultJson.setContents(true);
+            }
+        } catch(Exception e){
             resultJson.setStateUnconnect();
             resultJson.setMessage("Server Error");
         }
@@ -129,74 +196,11 @@ public class BoardServiceImpl implements BoardService {
         try {
             Question getQ = boardDao.findById(qid).get();
             getQ.setbClosed(true);
-            for (Answer answer : getQ.answers) {
-                if (answer.aid.equals(aid)) {
-                    answer.setbSelection(true);
-                    break;
-                }
-            }
             boardDao.save(getQ);
+            Answer getA = answerDao.findById(aid).get();
+            getA.setbSelection(true);
+            answerDao.save(getA);
             resultJson.setContents(true);
-        } catch(Exception e){
-            resultJson.setStateUnconnect();
-            resultJson.setMessage("Server Error");
-        }
-        return resultJson;
-    }
-
-    public ResultJson addAnswer(String qid, Answer answer) {
-        ResultJson resultJson = new ResultJson();
-        try {
-            Question getQ = boardDao.findById(qid).get();
-            getQ.answers.add(answer);
-            boardDao.save(getQ);
-            resultJson.setContents(true);
-        } catch(Exception e){
-            resultJson.setStateUnconnect();
-            resultJson.setMessage("Server Error");
-        }
-        return resultJson;
-    }
-
-    @Override
-    public ResultJson updateAnswer(String qid, String aid, String contents) {
-        ResultJson resultJson = new ResultJson();
-        try {
-            Question getQ = boardDao.findById(qid).get();
-            for (Answer answer : getQ.answers) {
-                if (answer.aid.equals(aid)) {
-                    answer.setContents(contents);
-                    break;
-                }
-            }
-            boardDao.save(getQ);
-            resultJson.setContents(true);
-        } catch(Exception e){
-            resultJson.setStateUnconnect();
-            resultJson.setMessage("Server Error");
-        }
-        return resultJson;
-    }
-
-    @Override
-    public ResultJson deleteAnswer(String qid, String aid) {
-        ResultJson resultJson = new ResultJson();
-        try {
-            Question getQ = boardDao.findById(qid).get();
-            for (Answer answer : getQ.answers) {
-                if (answer.aid.equals(aid)) {
-                    if(answer.isbSelection()){
-                        resultJson.setStateFail();
-                        resultJson.setMessage("채택되었기 때문에 삭제 불가");
-                        resultJson.setContents(false);
-                    }else{
-                        getQ.answers.remove(answer);
-                        resultJson.setContents(true);
-                    }
-                    break;
-                }
-            }
-            boardDao.save(getQ);
         } catch(Exception e){
             resultJson.setStateUnconnect();
             resultJson.setMessage("Server Error");
@@ -207,7 +211,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public ResultJson addQuestionComment(String qid, Comment comment) {
         ResultJson resultJson = new ResultJson();
-        try {
+        try {            
             Question getQ = boardDao.findById(qid).get();
             getQ.comments.add(comment);
             boardDao.save(getQ);
@@ -220,17 +224,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResultJson addAnswerComment(String qid, String aid, Comment comment) {
+    public ResultJson addAnswerComment(String aid, Comment comment) {
         ResultJson resultJson = new ResultJson();
-        try {
-            Question getQ = boardDao.findById(qid).get();
-            for (Answer answer : getQ.answers) {
-                if (answer.aid.equals(aid)) {
-                    answer.comments.add(comment);
-                    break;
-                }
-            }
-            boardDao.save(getQ);
+        try {            
+            Answer getAns = answerDao.findById(aid).get();
+            getAns.comments.add(comment);
+            answerDao.save(getAns);
             resultJson.setContents(true);
         } catch(Exception e){
             resultJson.setStateUnconnect();
@@ -260,22 +259,17 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResultJson updateAnswerComment(String qid, String aid, String cid, String contents) {
+    public ResultJson updateAnswerComment(String aid, String cid, String contents) {
         ResultJson resultJson = new ResultJson();
         try {
-            Question getQ = boardDao.findById(qid).get();
-            for (Answer answer : getQ.answers) {
-                if (answer.aid.equals(aid)) {
-                    for (Comment comment : answer.comments) {
-                        if (comment.cid.equals(cid)) {
-                            comment.setContents(contents);
-                            break;
-                        }
-                    }
+            Answer getA = answerDao.findById(aid).get();
+            for (Comment comment : getA.comments) {
+                if (comment.cid.equals(cid)) {
+                    comment.setContents(contents);
                     break;
                 }
             }
-            boardDao.save(getQ);
+            answerDao.save(getA);
             resultJson.setContents(true);
         } catch(Exception e){
             resultJson.setStateUnconnect();
@@ -289,9 +283,9 @@ public class BoardServiceImpl implements BoardService {
         ResultJson resultJson = new ResultJson();
         try {
             Question getQ = boardDao.findById(qid).get();
-            for (Comment cmt : getQ.comments) {
-                if (cmt.cid.equals(cid)) {
-                    getQ.comments.remove(cmt);
+            for (Comment comment : getQ.comments) {
+                if (comment.cid.equals(cid)) {
+                    getQ.comments.remove(comment);
                     break;
                 }
             }
@@ -305,22 +299,17 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResultJson deleteAnswerComment(String qid, String aid, String cid) {
+    public ResultJson deleteAnswerComment(String aid, String cid) {
         ResultJson resultJson = new ResultJson();
         try {
-            Question getQ = boardDao.findById(qid).get();
-            for (Answer ans : getQ.answers) {
-                if (ans.aid.equals(aid)) {
-                    for (Comment comment : ans.comments) {
-                        if (comment.cid.equals(cid)) {
-                            ans.comments.remove(comment);
-                            break;
-                        }
-                    }
+            Answer getA = answerDao.findById(aid).get();
+            for (Comment comment : getA.comments) {
+                if (comment.cid.equals(cid)) {
+                    getA.comments.remove(comment);
                     break;
                 }
             }
-            boardDao.save(getQ);
+            answerDao.save(getA);
             resultJson.setContents(true);
         } catch(Exception e){
             resultJson.setStateUnconnect();
@@ -328,5 +317,9 @@ public class BoardServiceImpl implements BoardService {
         }
         return resultJson;
     }
+
+    
+
+    
 
 }

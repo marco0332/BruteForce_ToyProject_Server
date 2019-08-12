@@ -15,6 +15,7 @@ public class User implements Serializable {
     private String photoURL;
     private String profile;
     private int point;
+    private String group;
     private Boolean bAdmin;
     private Boolean bDeactivated;
     private static final long serialVersionUID = 1L;
@@ -26,8 +27,9 @@ public class User implements Serializable {
         this.userid = userid;
         this.pw = pw;
         this.name = name;
-        this.photoURL = photoURL;
-        this.point = point;
+        this.photoURL = "";
+        this.point = 0;
+        this.group = "";
         this.profile = "";
         this.bAdmin = false;
         this.bDeactivated = false;
@@ -97,10 +99,21 @@ public class User implements Serializable {
         this.profile = profile;
     }
 
+    
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
     @Override
     public String toString() {
-        return "User [bAdmin=" + bAdmin + ", bDeactivated=" + bDeactivated + ", name=" + name + ", photoURL=" + photoURL
-                + ", point=" + point + ", profile=" + profile + ", pw=" + pw + ", userid=" + userid + "]";
+        return "User [bAdmin=" + bAdmin + ", bDeactivated=" + bDeactivated + ", group=" + group + ", name=" + name
+                + ", photoURL=" + photoURL + ", point=" + point + ", profile=" + profile + ", pw=" + pw + ", userid="
+                + userid + "]";
     }
 
     
