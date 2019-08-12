@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
 public interface BoardRepository extends MongoRepository<Question, String> {
     @Query(value = "{'type':'question','title':?0}")
     public List<Question> findByTitle(String title);
-    public List<Question> findByTag(String[] tag);
+    public List<Question> findByTag(int[] tag);
     public List<Question> findByType(String type);
 }

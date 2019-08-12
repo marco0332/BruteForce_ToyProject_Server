@@ -55,7 +55,7 @@ public class ApplicationTests {
     @Test
     public void boardTest() {
         // boardTest.addQuestion(new Question("qtitle","qcontents","qwriterid","qwritername",new String[] {"java","cpp"}));
-        // boardTest.addQuestion(new Question("qtitle2","qcontents2","qwriterid2","qwritername2",new String[] {"java","cpp"}));
+        // boardTest.addQuestion(new Question("qtitle2","qcontents2","qwriterid2","qwritername2",new int[] {3,5}));
         // boardTest.addAnswer(new Answer("5d4d1e4a61cbaa4e607bd9cf","acontents","ariterid","awritername"));
         // boardTest.addAnswer(new Answer("5d4d1e4a61cbaa4e607bd9cf", "acontents2","ariterid2","awritername2"));
         // boardTest.addAnswer(new Answer("5d4d1e4a61cbaa4e607bd9cf", "acontents3","ariterid3","awritername3"));
@@ -68,6 +68,14 @@ public class ApplicationTests {
         // boardTest.findAllQuestions();
         // boardTest.findQuestionByTitle("qtitle");
         // boardTest.updateQuestion("5d4d1e4a61cbaa4e607bd9cf", "qtitleupdate","qcontentsupdate",new String[] {"update","tag"});
-
+        // boardTest.deleteQuestion("5d4d1e4b61cbaa4e607bd9d0");
+        // boardTest.updateAnswer("5d4d1e8461cbaa50e8d3c0d1", "답변 내용 수정되니?");
+        // boardTest.deleteAnswer("5d4d1e8461cbaa50e8d3c0d2");
+        // boardTest.updateQuestionComment("5d4d1e4a61cbaa4e607bd9cf", "5d4d1e8461cbaa50e8d3c0d7", "댓글도 업데이트 되나");
+        // boardTest.updateAnswerComment("5d4d1e8461cbaa50e8d3c0d1", "5d4d1eb661cbaa3e98701cd4", "답변의 댓글도 업데이트 되나");
+        // boardTest.deleteQuestionComment("5d4d1e4a61cbaa4e607bd9cf", "5d4d1e8461cbaa50e8d3c0d7");
+        // boardTest.deleteAnswerComment("5d4d1e8461cbaa50e8d3c0d1", "5d4d1eb661cbaa3e98701cd4");
+        // boardTest.closedUpdate("5d4d1e4a61cbaa4e607bd9cf", "5d4d1e8461cbaa50e8d3c0d1");
+        boardTest.findQuestionByTag(new int[] {0,0,0,1,0,1}, 2);
     }
 }

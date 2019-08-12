@@ -19,7 +19,7 @@ public class Question implements Serializable{
     public String contents;
     public String writerUid;
     public String writerName;
-    public String[] tag;
+    public int[] tag;
     public Boolean bClosed;
     public Date timestamp;
     public int score;
@@ -29,7 +29,7 @@ public class Question implements Serializable{
     public Question() {
     }
 
-    public Question(String title, String contents, String writerUid, String writerName, String[] tag) {
+    public Question(String title, String contents, String writerUid, String writerName, int[] tag) {
         this.qid = new ObjectId().toString();
         this.title = title;
         this.contents = contents;
@@ -83,11 +83,11 @@ public class Question implements Serializable{
         this.writerName = writerName;
     }
 
-    public String[] getTag() {
+    public int[] getTag() {
         return tag;
     }
 
-    public void setTag(String[] tag) {
+    public void setTag(int[] tag) {
         this.tag = tag;
     }
 

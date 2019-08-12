@@ -12,5 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository("AnswerRepository")
 public interface AnswerRepository extends MongoRepository<Answer, String> {
     List<Answer> findByQid(String qid);
+    List<Answer> deleteByQid(String qid);
     
 }
