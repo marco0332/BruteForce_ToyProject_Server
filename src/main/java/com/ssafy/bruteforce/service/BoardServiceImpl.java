@@ -76,6 +76,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public ResultJson findQuestionByTag(int[] tag, int size) {
+        ResultJson resultJson = new ResultJson();
         List<Question> list = boardDao.findByType("question");
         List<Question> returnList = new ArrayList<>();
         for(Question q : list){
@@ -89,8 +90,13 @@ public class BoardServiceImpl implements BoardService {
                 returnList.add(q);
             }
         }
-        System.out.println(returnList.toString());
-        return null;
+        if(returnList.isEmpty()){
+            resultJson.setStateFail();
+            resultJson.setMessage("태그가 존재하지 않습니다.");
+        }else{
+            resultJson.setContents(returnList);
+        }
+        return resultJson;
     }
 
     @Override
@@ -98,7 +104,9 @@ public class BoardServiceImpl implements BoardService {
         ResultJson resultJson = new ResultJson();
         try {
             boardDao.insert(question);
+            resultJson.setContents(true);
         } catch (Exception e) {
+            resultJson.setContents(false);
             resultJson.setStateUnconnect();
             resultJson.setMessage("Server Error");
         }
@@ -110,11 +118,17 @@ public class BoardServiceImpl implements BoardService {
         ResultJson resultJson = new ResultJson();
         try {
             Question getQ = boardDao.findById(qid).get();
-            getQ.setTitle(title);
-            getQ.setContents(contents);
-            getQ.setTag(tag);
-            boardDao.save(getQ);
-            resultJson.setContents(true);
+            if(getQ.isbClosed()){
+                resultJson.setStateFail();
+                resultJson.setMessage("답변이 채택되어 수정할 수 없습니다.");
+                resultJson.setContents(false);
+            }else{
+                getQ.setTitle(title);
+                getQ.setTag(tag);
+                getQ.setContents(getQ.getContents()+"\n"+contents);
+                boardDao.save(getQ);
+                resultJson.setContents(true);
+            }
         } catch (Exception e) {
             resultJson.setStateUnconnect();
             resultJson.setMessage("Server Error");
@@ -129,7 +143,7 @@ public class BoardServiceImpl implements BoardService {
             boolean bcheckClosed = boardDao.findById(qid).get().isbClosed();
             if(bcheckClosed){
                 resultJson.setStateFail();
-                resultJson.setMessage("채택되었기 때문에 삭제 불가");
+                resultJson.setMessage("답변이 채택되었기 때문에 삭제가 불가능합니다.");
                 resultJson.setContents(false);
             }else{
                 boardDao.deleteById(qid);
@@ -148,8 +162,9 @@ public class BoardServiceImpl implements BoardService {
         ResultJson resultJson = new ResultJson();
         try {
             answerDao.insert(answer);
-            resultJson.setContents(boardDao.findAll());
+            resultJson.setContents(true);
         } catch (Exception e) {
+            resultJson.setContents(false);
             resultJson.setStateUnconnect();
             resultJson.setMessage("Server Error");
         }
@@ -161,9 +176,15 @@ public class BoardServiceImpl implements BoardService {
         ResultJson resultJson = new ResultJson();
         try {
             Answer getA = answerDao.findById(aid).get();
-            getA.setContents(contents);
-            answerDao.save(getA);
-            resultJson.setContents(true);
+            if(getA.isbSelection()){
+              resultJson.setStateFail();
+              resultJson.setMessage("답변이 채택되어 수정이 불가능합니다.");  
+              resultJson.setContents(false);
+            }else{
+                getA.setContents(getA.getContents()+"\n"+contents);
+                answerDao.save(getA);
+                resultJson.setContents(true);
+            }
         } catch (Exception e) {
             resultJson.setStateUnconnect();
             resultJson.setMessage("Server Error");
@@ -317,9 +338,4 @@ public class BoardServiceImpl implements BoardService {
         }
         return resultJson;
     }
-
-    
-
-    
-
 }

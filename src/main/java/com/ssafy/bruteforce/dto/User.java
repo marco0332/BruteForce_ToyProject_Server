@@ -99,8 +99,6 @@ public class User implements Serializable {
         this.profile = profile;
     }
 
-    
-
     public String getGroup() {
         return group;
     }
