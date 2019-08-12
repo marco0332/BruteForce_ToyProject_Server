@@ -3,10 +3,8 @@ package com.ssafy.bruteforce.repository;
 import java.util.List;
 
 import com.ssafy.bruteforce.dto.Answer;
-import com.ssafy.bruteforce.dto.Question;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository("AnswerRepository")
