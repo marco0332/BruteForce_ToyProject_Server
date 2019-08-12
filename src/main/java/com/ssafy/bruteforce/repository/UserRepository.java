@@ -2,10 +2,10 @@ package com.ssafy.bruteforce.repository;
 
 import java.util.List;
 
+import com.microsoft.azure.spring.data.cosmosdb.repository.DocumentDbRepository;
 import com.ssafy.bruteforce.dto.User;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface UserRepository extends MongoRepository<User,String> {
+public interface UserRepository extends DocumentDbRepository<User,String> {
     List<User> findByNameLike(String name);
 }

@@ -1,12 +1,11 @@
 package com.ssafy.bruteforce.dto;
 
-import java.io.Serializable;
+import com.microsoft.azure.spring.data.cosmosdb.core.mapping.Document;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "user")
-public class User implements Serializable {
+public class User {
 
     @Id
     private String userid;
@@ -18,7 +17,6 @@ public class User implements Serializable {
     private String group;
     private Boolean bAdmin;
     private Boolean bDeactivated;
-    private static final long serialVersionUID = 1L;
 
     public User() {
     }

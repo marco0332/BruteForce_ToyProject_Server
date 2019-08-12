@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
                 resultJson.setMessage("ID already exist");
                 resultJson.setContents(false);
             }else{
-                userDao.insert(user);
+                userDao.save(user);
                 resultJson.setContents(true);
             }
 		}catch(Exception e){

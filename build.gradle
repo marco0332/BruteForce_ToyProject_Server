@@ -23,6 +23,15 @@ configurations {
 repositories {
 	mavenCentral()
 }
+ext {
+	set('azureVersion', "2.1.6")
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "com.microsoft.azure:azure-spring-boot-bom:${azureVersion}"
+	}
+}
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -34,6 +43,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compile 'io.springfox:springfox-swagger2:2.6.1'
 	compile 'io.springfox:springfox-swagger-ui:2.6.1'
+	compile group: 'com.microsoft.azure', name: 'azure-cosmosdb-spring-boot-starter'
 	
 }
 

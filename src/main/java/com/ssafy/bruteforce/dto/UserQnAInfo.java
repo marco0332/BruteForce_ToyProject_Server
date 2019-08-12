@@ -2,8 +2,9 @@ package com.ssafy.bruteforce.dto;
 
 import java.io.Serializable;
 
+import com.microsoft.azure.spring.data.cosmosdb.core.mapping.Document;
+
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "user")
 public class UserQnAInfo implements Serializable {

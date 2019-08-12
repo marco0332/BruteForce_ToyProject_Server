@@ -1,9 +1,6 @@
 package com.ssafy.bruteforce;
 
 
-import com.ssafy.bruteforce.dto.Answer;
-import com.ssafy.bruteforce.dto.Comment;
-import com.ssafy.bruteforce.dto.Question;
 import com.ssafy.bruteforce.dto.User;
 import com.ssafy.bruteforce.service.BoardService;
 import com.ssafy.bruteforce.service.UserService;
@@ -18,8 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class ApplicationTests {
 
-    @Autowired
-    BoardService boardTest;
 
     @Autowired
     UserService userTest;
@@ -76,6 +71,6 @@ public class ApplicationTests {
         // boardTest.deleteQuestionComment("5d4d1e4a61cbaa4e607bd9cf", "5d4d1e8461cbaa50e8d3c0d7");
         // boardTest.deleteAnswerComment("5d4d1e8461cbaa50e8d3c0d1", "5d4d1eb661cbaa3e98701cd4");
         // boardTest.closedUpdate("5d4d1e4a61cbaa4e607bd9cf", "5d4d1e8461cbaa50e8d3c0d1");
-        boardTest.findQuestionByTag(new int[] {0,0,0,1,0,1}, 2);
+        // boardTest.findQuestionByTag(new int[] {0,0,0,1,0,1}, 2);
     }
 }
