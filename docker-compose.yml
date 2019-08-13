@@ -13,8 +13,8 @@ services:
     - 27017:27017
     command: --smallfiles
   app:
-    image: app # 우리가 Dockerfile에서 지정했던 app 이름
+    image: lang0602/bruteforce # 우리가 Dockerfile에서 지정했던 app 이름
     ports:
-    - 8080:8080
+    - 80:80
     links:
     - mongodb
